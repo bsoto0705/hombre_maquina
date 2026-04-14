@@ -30,6 +30,20 @@
                             800: '#5b21b6',
                             900: '#4c1d95',
                         }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
                     }
                 }
             }
@@ -37,11 +51,134 @@
     </script>
     <style>
         * { font-family: 'Outfit', sans-serif; }
+        
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .gradient-mesh {
+            background:
+                radial-gradient(at 40% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(167, 139, 250, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(124, 58, 237, 0.08) 0px, transparent 50%);
+        }
+
+        .input-field {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-field:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(139, 92, 246, 0.2);
+        }
+
+        .form-group {
+            opacity: 1;
+        }
+
+        .btn-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -5px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+
+        label {
+            transition: all 0.2s ease;
+        }
+
+        input:focus + label,
+        textarea:focus + label {
+            color: #7c3aed;
+        }
+
+        .checkbox-custom {
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-custom:checked {
+            background: #7c3aed;
+            border-color: #7c3aed;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            top: 5%;
+            left: 5%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            border-radius: 30px;
+        }
+
+        .shape-2 {
+            top: 50%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border-radius: 50%;
+            animation-delay: -2s;
+        }
+
+        .shape-3 {
+            bottom: 10%;
+            left: 10%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #a78bfa, #c4b5fd);
+            border-radius: 15px;
+            animation-delay: -4s;
+        }
+
+        .shape-4 {
+            bottom: 20%;
+            right: 15%;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #c4b5fd, #ddd6fe);
+            border-radius: 10px;
+            animation-delay: -6s;
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800">
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200/50">
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    <div class="fixed inset-0 gradient-mesh pointer-events-none z-0"></div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-200/50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shadow-lg shadow-brand-600/30">
@@ -52,72 +189,138 @@
                 <span class="font-bold text-xl tracking-tight">InventoryPro</span>
             </div>
             <div class="flex items-center gap-6">
-                <a href="/" class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Inicio</a>
-                <a href="/productos" class="text-brand-600 font-medium">Productos</a>
+                <a href="/" th:href="@{/}" class="text-slate-500 hover:text-brand-600 transition-colors font-medium">Inicio</a>
+                <a href="/productos" th:href="@{/productos}" class="text-slate-500 hover:text-brand-600 transition-colors font-medium">Productos</a>
             </div>
-            <a href="/productos/nuevo" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30">
-                + Nuevo Producto
+            <a href="/productos/nuevo" th:href="@{/productos/nuevo}" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-0.5 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Nuevo
             </a>
         </div>
     </nav>
 
-    <main class="pt-24 pb-12">
+    <main class="pt-24 pb-12 relative z-10">
         <div class="max-w-2xl mx-auto px-6">
-            <div class="mb-8">
-                <div class="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                    <a href="/productos" class="hover:text-brand-600">Productos</a>
-                    <span>/</span>
-                    <span class="text-slate-800">Nuevo Producto</span>
+            <div class="mb-8 fade-in">
+                <div class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+                    <a href="/productos" th:href="@{/productos}" class="hover:text-brand-600 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Productos
+                    </a>
+                    <span class="text-slate-300">/</span>
+                    <span class="text-brand-600 font-medium" th:text="${titulo}">Nuevo Producto</span>
                 </div>
-                <h1 class="text-3xl font-bold text-slate-800" th:text="${titulo}">Nuevo Producto</h1>
+                <h1 class="text-3xl font-bold text-slate-800 flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </span>
+                    <span th:text="${titulo}">Nuevo Producto</span>
+                </h1>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
-                <form th:action="@{/productos/guardar}" th:object="${producto}" method="post" class="space-y-6">
-                    <div>
-                        <label for="nombre" class="block text-sm font-medium text-slate-700 mb-2">Nombre del Producto</label>
-                        <input type="text" id="nombre" th:field="*{nombre}" required
-                            class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all"
-                            placeholder="Ingresa el nombre del producto">
-                    </div>
-
-                    <div>
-                        <label for="descripcion" class="block text-sm font-medium text-slate-700 mb-2">Descripción</label>
-                        <textarea id="descripcion" th:field="*{descripcion}" required rows="4"
-                            class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all resize-none"
-                            placeholder="Describe el producto"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label for="precio" class="block text-sm font-medium text-slate-700 mb-2">Precio</label>
+            <div class="relative">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                    <div class="shape shape-4"></div>
+                </div>
+                
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100/50 p-8 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600"></div>
+                    
+                    <form th:action="@{/productos/guardar}" th:object="${producto}" method="post" class="space-y-6 relative z-10">
+                        <div class="form-group">
+                            <label for="nombre" class="block text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                </svg>
+                                Nombre del Producto
+                            </label>
                             <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">$</span>
-                                <input type="number" id="precio" th:field="*{precio}" step="0.01" min="0" required
-                                    class="w-full pl-8 pr-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all"
-                                    placeholder="0.00">
+                                <input type="text" id="nombre" th:field="*{nombre}" required
+                                    class="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-100/50 outline-none transition-all input-field bg-slate-50/50"
+                                    placeholder="Ej: Laptop Pro X1">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label for="stock" class="block text-sm font-medium text-slate-700 mb-2">Stock</label>
-                            <input type="number" id="stock" th:field="*{stock}" min="0" required
-                                class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all"
-                                placeholder="0">
+                        <div class="form-group">
+                            <label for="descripcion" class="block text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Descripción
+                            </label>
+                            <textarea id="descripcion" th:field="*{descripcion}" required rows="4"
+                                class="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-100/50 outline-none transition-all input-field bg-slate-50/50 resize-none"
+                                placeholder="Describe las características del producto..."></textarea>
                         </div>
-                    </div>
 
-                    <div class="flex items-center gap-4 pt-4">
-                        <button type="submit"
-                            class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50">
-                            Guardar Producto
-                        </button>
-                        <a href="/productos"
-                            class="px-6 py-3 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors font-medium">
-                            Cancelar
-                        </a>
-                    </div>
-                </form>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label for="precio" class="block text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Precio
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">$</span>
+                                    <input type="number" id="precio" th:field="*{precio}" step="0.01" min="0" required
+                                        class="w-full pl-10 pr-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-100/50 outline-none transition-all input-field bg-slate-50/50 font-mono text-lg"
+                                        placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="stock" class="block text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
+                                    Stock
+                                </label>
+                                <div class="relative">
+                                    <input type="number" id="stock" th:field="*{stock}" min="0" required
+                                        class="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-100/50 outline-none transition-all input-field bg-slate-50/50 font-mono text-lg"
+                                        placeholder="0">
+                                    <div class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 pt-6 form-group">
+                            <button type="submit"
+                                class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 btn-hover flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Guardar Producto
+                            </button>
+                            <a href="/productos" th:href="@{/productos}"
+                                class="px-8 py-4 rounded-2xl border-2 border-slate-200 text-slate-600 hover:border-brand-300 hover:text-brand-600 hover:bg-brand-50/50 transition-all font-semibold flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </main>

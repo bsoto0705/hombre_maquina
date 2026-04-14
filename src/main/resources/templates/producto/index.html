@@ -30,6 +30,25 @@
                             800: '#5b21b6',
                             900: '#4c1d95',
                         }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        }
                     }
                 }
             }
@@ -37,11 +56,81 @@
     </script>
     <style>
         * { font-family: 'Outfit', sans-serif; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .gradient-mesh {
+            background:
+                radial-gradient(at 40% 20%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(167, 139, 250, 0.06) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(124, 58, 237, 0.05) 0px, transparent 50%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(124, 58, 237, 0.15);
+        }
+
+        .row-hover {
+            transition: all 0.3s ease;
+        }
+
+        .row-hover:hover {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.03) 0%, transparent 100%);
+        }
+
+        .btn-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .7; }
+        }
+
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus {
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .status-badge {
+            transition: all 0.2s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800">
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200/50">
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    <div class="fixed inset-0 gradient-mesh pointer-events-none z-0"></div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-200/50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shadow-lg shadow-brand-600/30">
@@ -52,93 +141,137 @@
                 <span class="font-bold text-xl tracking-tight">InventoryPro</span>
             </div>
             <div class="flex items-center gap-6">
-                <a href="/" class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Inicio</a>
-                <a href="/productos" class="text-brand-600 font-medium">Productos</a>
+                <a href="/" th:href="@{/}" class="text-slate-500 hover:text-brand-600 transition-colors font-medium">Inicio</a>
+                <a href="/productos" th:href="@{/productos}" class="text-brand-600 font-medium relative">
+                    Productos
+                    <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-brand-600 rounded-full"></span>
+                </a>
             </div>
-            <a href="/productos/nuevo" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30">
-                + Nuevo Producto
+            <a href="/productos/nuevo" th:href="@{/productos/nuevo}" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-0.5 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Nuevo
             </a>
         </div>
     </nav>
 
-    <main class="pt-24 pb-12">
+    <main class="pt-24 pb-12 relative z-10">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center justify-between mb-8 fade-in">
                 <div>
-                    <h1 class="text-3xl font-bold text-slate-800">Productos</h1>
-                    <p class="text-slate-500 mt-1">Gestiona tu inventario de productos</p>
+                    <h1 class="text-3xl font-bold text-slate-800 flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                        </span>
+                        Productos
+                    </h1>
+                    <p class="text-slate-500 mt-1 ml-13">Gestiona tu inventario de productos</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Buscar productos..." class="pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none w-64">
-                        <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="relative group">
+                        <input type="text" placeholder="Buscar productos..." 
+                            class="pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-brand-400 focus:ring-4 focus:ring-brand-100/50 outline-none w-72 input-focus bg-white/80">
+                        <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-brand-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
-                <table class="w-full">
-                    <thead class="bg-slate-50 border-b border-slate-200">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">ID</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Nombre</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Descripción</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Precio</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Stock</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr th:each="producto : ${productos}" class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4 text-sm font-mono text-slate-500" th:text="${producto.id}">1</td>
-                            <td class="px-6 py-4">
-                                <span class="font-semibold text-slate-800" th:text="${producto.nombre}">Producto</span>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-slate-600" th:text="${producto.descripcion}">Descripción</td>
-                            <td class="px-6 py-4">
-                                <span class="font-mono text-brand-600 font-semibold" th:text="'$' + ${producto.precio}">$0.00</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
-                                      th:classappend="${producto.stock > 10} ? 'bg-green-100 text-green-700' : (${producto.stock > 0} ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700')"
-                                      th:text="${producto.stock}">0</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <button title="Editar" class="p-2 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </button>
-                                    <button title="Eliminar" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr th:if="${productos.empty}">
-                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
-                                <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
-                                <p class="text-lg">No hay productos registrados</p>
-                                <a href="/productos/nuevo" class="text-brand-600 hover:underline mt-2 inline-block">Crear el primer producto</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100/50 overflow-hidden fade-in stagger-1">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Producto</th>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Descripción</th>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Precio</th>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Stock</th>
+                                <th class="px-6 py-5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr th:each="producto, iter : ${productos}" class="row-hover" th:class="${iter.index % 2 == 0} ? 'bg-white' : 'bg-slate-50/50'">
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-sm text-slate-400 bg-slate-100 px-3 py-1 rounded-lg" th:text="${producto.id}">1</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-md">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                            </svg>
+                                        </div>
+                                        <span class="font-semibold text-slate-800" th:text="${producto.nombre}">Producto</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-slate-500 max-w-xs truncate block" th:text="${producto.descripcion}">Descripción</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-brand-600 font-bold bg-brand-50 px-3 py-1.5 rounded-lg" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">$0.00</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold status-badge"
+                                          th:classappend="${producto.stock > 10} ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : (${producto.stock > 0} ? 'bg-amber-100 text-amber-700 border border-amber-200' : 'bg-rose-100 text-rose-700 border border-rose-200')">
+                                        <span class="w-1.5 h-1.5 rounded-full"
+                                              th:classappend="${producto.stock > 10} ? 'bg-emerald-500' : (${producto.stock > 0} ? 'bg-amber-500' : 'bg-rose-500')"></span>
+                                        <span th:text="${producto.stock}">0</span>
+                                        <span th:text="${producto.stock > 10} ? 'Stock OK' : (${producto.stock > 0} ? 'Bajo' : 'Agotado')"></span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <button title="Editar" class="p-2.5 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-xl transition-all hover:scale-110">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </button>
+                                        <button title="Eliminar" class="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all hover:scale-110">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${productos.empty}">
+                                <td colspan="6" class="px-6 py-16 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                                            <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-lg text-slate-500 font-medium mb-2">No hay productos registrados</p>
+                                        <p class="text-slate-400 text-sm mb-4">Comienza agregando tu primer producto al inventario</p>
+                                        <a href="/productos/nuevo" th:href="@{/productos/nuevo}" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-xl font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-0.5 flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Crear primer producto
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="mt-6 flex items-center justify-between">
-                <p class="text-slate-500 text-sm">Mostrando <span th:text="${productos.size()}">0</span> productos</p>
-                <div class="flex items-center gap-2">
-                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors text-sm">Anterior</button>
-                    <button class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm">1</button>
-                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors text-sm">Siguiente</button>
+            <div class="mt-6 flex items-center justify-between fade-in stagger-2">
+                <p class="text-slate-500 text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 btn-pulse"></span>
+                    Mostrando <span th:text="${productos.size()}" class="font-semibold text-slate-700">0</span> productos
+                </p>
+                <div class="flex items-center gap-2 bg-white rounded-xl p-1 shadow-sm border border-slate-100">
+                    <button class="px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-brand-600 transition-colors text-sm font-medium">Anterior</button>
+                    <button class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium shadow-md">1</button>
+                    <button class="px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-brand-600 transition-colors text-sm font-medium">Siguiente</button>
                 </div>
             </div>
         </div>

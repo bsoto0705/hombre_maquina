@@ -2,6 +2,7 @@ package ec.ucacue.registro.hombre_maquina.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import ec.ucacue.registro.hombre_maquina.models.Producto;
 import ec.ucacue.registro.hombre_maquina.services.ProductoService;
@@ -27,7 +28,7 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(Producto producto) {
+    public String guardar(@ModelAttribute("producto") Producto producto, Model model) {
         productoService.guardar(producto);
         return "redirect:/productos";
     }

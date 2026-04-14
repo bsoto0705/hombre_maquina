@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -137,10 +137,10 @@
                 <a href="#contact"
                     class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Contacto</a>
             </div>
-            <button
+            <a href="/productos" th:href="@{/productos}"
                 class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50">
                 Demo Gratis
-            </button>
+            </a>
         </div>
     </nav>
 
@@ -161,14 +161,14 @@
                     reportes en tiempo real.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <button
-                        class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-1">
+                    <a th:href="@{/productos}"
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-1 inline-block text-center">
                         Empezar gratis
-                    </button>
-                    <button
-                        class="bg-white hover:bg-slate-50 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg border-2 border-slate-200 hover:border-brand-300 transition-all hover:-translate-y-1">
+                    </a>
+                    <a th:href="@{/productos}"
+                        class="bg-white hover:bg-slate-50 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg border-2 border-slate-200 hover:border-brand-300 transition-all hover:-translate-y-1 inline-block text-center">
                         Ver demo
-                    </button>
+                    </a>
                 </div>
                 <div class="flex items-center gap-6 mt-10 text-sm text-slate-500">
                     <div class="flex items-center gap-2">
@@ -437,14 +437,14 @@
                     <p class="text-slate-300 text-lg mb-8">Prueba InventoryPro gratis durante 14 días. Sin compromiso.
                     </p>
                     <div class="flex flex-wrap justify-center gap-4">
-                        <button
+                        <a th:href="@{/productos/nuevo}"
                             class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-1">
                             Crear cuenta gratis
-                        </button>
-                        <button
+                        </a>
+                        <a href="#contact"
                             class="bg-transparent border-2 border-brand-400 text-brand-100 hover:bg-brand-600/20 px-8 py-4 rounded-xl font-bold text-lg transition-all">
                             Hablar con ventas
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
