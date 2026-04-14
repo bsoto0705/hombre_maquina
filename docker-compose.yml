@@ -1,6 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
+    platform: linux/arm64
     container_name: hombre_maquina_mysql
     restart: unless-stopped
     environment:

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryPro - Sistema de Gestión de Inventario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Outfit', 'sans-serif'],
+                        'mono': ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        'brand': {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .gradient-mesh {
+            background:
+                radial-gradient(at 40% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(167, 139, 250, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(167, 139, 250, 0.1) 0px, transparent 50%);
+        }
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-dark {
+            background: rgba(15, 15, 20, 0.8);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.25);
+        }
+
+        .icon-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .icon-float:nth-child(2) {
+            animation-delay: -2s;
+        }
+
+        .icon-float:nth-child(3) {
+            animation-delay: -4s;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 gradient-mesh grid-pattern pointer-events-none z-0"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shadow-lg shadow-brand-600/30">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
+                <span class="font-bold text-xl tracking-tight">InventoryPro</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features"
+                    class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Características</a>
+                <a href="#benefits"
+                    class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Beneficios</a>
+                <a href="#contact"
+                    class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Contacto</a>
+            </div>
+            <button
+                class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50">
+                Demo Gratis
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative z-10">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-sm font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                    Nueva versión 2.0 disponible
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                    Controla tu <span class="text-gradient">inventario</span> como nunca antes
+                </h1>
+                <p class="text-xl text-slate-600 mb-8 leading-relaxed max-w-xl">
+                    Optimiza la gestión de tu almacén con InventoryPro. Controla productos, movimientos y genera
+                    reportes en tiempo real.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-1">
+                        Empezar gratis
+                    </button>
+                    <button
+                        class="bg-white hover:bg-slate-50 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg border-2 border-slate-200 hover:border-brand-300 transition-all hover:-translate-y-1">
+                        Ver demo
+                    </button>
+                </div>
+                <div class="flex items-center gap-6 mt-10 text-sm text-slate-500">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Sin tarjeta</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>14 días gratis</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Soporte 24/7</span>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute inset-0 bg-brand-400/20 rounded-full blur-3xl"></div>
+                <div class="relative glass-dark rounded-3xl p-8 shadow-2xl">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-4 text-slate-400 text-sm font-mono">InventoryPro Dashboard</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">Total Productos</p>
+                            <p class="text-2xl font-bold text-white">2,847</p>
+                            <p class="text-green-400 text-xs mt-1">+12% este mes</p>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">Stock Bajo</p>
+                            <p class="text-2xl font-bold text-white">23</p>
+                            <p class="text-red-400 text-xs mt-1">Requiere atención</p>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">Movimientos</p>
+                            <p class="text-2xl font-bold text-white">156</p>
+                            <p class="text-brand-400 text-xs mt-1">Hoy</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-xl p-4">
+                        <p class="text-slate-400 text-xs mb-3">Productos recientes</p>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 text-sm">Laptop Pro X1</span>
+                                <span class="text-brand-400 text-sm font-mono">45 units</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 text-sm">Mouse Wireless</span>
+                                <span class="text-green-400 text-sm font-mono">128 units</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 text-sm">Monitor 27"</span>
+                                <span class="text-red-400 text-sm font-mono">8 units</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span
+                    class="text-brand-600 font-semibold text-sm tracking-wider uppercase mb-4 block">Características</span>
+                <h2 class="text-4xl font-bold mb-4">Todo lo que necesitas</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mx-auto">Herramientas potentes diseñadas para simplificar la
+                    gestión de tu inventario</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-100 flex items-center justify-center mb-6 icon-float">
+                        <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Gestión de Productos</h3>
+                    <p class="text-slate-600">Administra tu catálogo completo con códigos de barras, categorías, precios
+                        y descripciones detalladas.</p>
+                </div>
+                <div class="card-hover bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-100 flex items-center justify-center mb-6 icon-float">
+                        <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Control de Movimientos</h3>
+                    <p class="text-slate-600">Registra entradas y salidas de inventario con historial completo y
+                        trazabilidad total.</p>
+                </div>
+                <div class="card-hover bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-100 flex items-center justify-center mb-6 icon-float">
+                        <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Reportes Avanzados</h3>
+                    <p class="text-slate-600">Genera análisis detallados, estadísticas y exportación a Excel para tomar
+                        mejores decisiones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-brand-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0 grid-pattern"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <p class="text-5xl font-bold text-gradient mb-2">500+</p>
+                    <p class="text-brand-200">Empresas confían en nosotros</p>
+                </div>
+                <div>
+                    <p class="text-5xl font-bold text-gradient mb-2">50K+</p>
+                    <p class="text-brand-200">Productos gestionados</p>
+                </div>
+                <div>
+                    <p class="text-5xl font-bold text-gradient mb-2">99.9%</p>
+                    <p class="text-brand-200">Uptime garantizado</p>
+                </div>
+                <div>
+                    <p class="text-5xl font-bold text-gradient mb-2">24/7</p>
+                    <p class="text-brand-200">Soporte técnico</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-brand-200/50 rounded-full blur-3xl"></div>
+                        <div class="relative glass rounded-3xl p-8 shadow-xl">
+                            <div class="flex items-center gap-4 mb-6 p-4 bg-brand-50 rounded-xl">
+                                <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">Velocidad</p>
+                                    <p class="text-sm text-slate-600">Interfaz ultrarrápida</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 mb-6 p-4 bg-brand-50 rounded-xl">
+                                <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">Seguridad</p>
+                                    <p class="text-sm text-slate-600">Datos encriptados</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-brand-50 rounded-xl">
+                                <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">Cloud</p>
+                                    <p class="text-sm text-slate-600">Acceso desde cualquier lugar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <span
+                        class="text-brand-600 font-semibold text-sm tracking-wider uppercase mb-4 block">Beneficios</span>
+                    <h2 class="text-4xl font-bold mb-6">Optimiza tu operación</h2>
+                    <p class="text-slate-600 text-lg mb-8">Reduce errores, ahorra tiempo y toma decisiones informadas
+                        con datos en tiempo real.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-4 h-4 text-brand-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <span class="text-slate-700">Reducción del 80% en errores de inventario</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-4 h-4 text-brand-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <span class="text-slate-700">Automatización de alertas de stock</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-4 h-4 text-brand-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <span class="text-slate-700">Integración con sistemas existentes</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-4 h-4 text-brand-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <span class="text-slate-700">Reportes personalizables en tiempo real</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="glass-dark rounded-3xl p-12 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-brand-600/10"></div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl font-bold text-white mb-4">¿Listo para comenzar?</h2>
+                    <p class="text-slate-300 text-lg mb-8">Prueba InventoryPro gratis durante 14 días. Sin compromiso.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button
+                            class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-1">
+                            Crear cuenta gratis
+                        </button>
+                        <button
+                            class="bg-transparent border-2 border-brand-400 text-brand-100 hover:bg-brand-600/20 px-8 py-4 rounded-xl font-bold text-lg transition-all">
+                            Hablar con ventas
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-xl">InventoryPro</span>
+                    </div>
+                    <p class="text-slate-400">Sistema de gestión de inventario moderno y eficiente para tu empresa.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Producto</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Características</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Precios</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Integraciones</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Empresa</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Sobre nosotros</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Carreras</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li>support@inventorypro.com</li>
+                        <li>+1 (555) 123-4567</li>
+                        <li>San Francisco, CA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-slate-500">
+                <p>&copy; 2026 InventoryPro. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
