@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - InventoryPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Outfit', 'sans-serif'],
+                        'mono': ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        'brand': {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Outfit', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shadow-lg shadow-brand-600/30">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
+                <span class="font-bold text-xl tracking-tight">InventoryPro</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/" class="text-slate-600 hover:text-brand-600 transition-colors font-medium">Inicio</a>
+                <a href="/productos" class="text-brand-600 font-medium">Productos</a>
+            </div>
+            <a href="/productos/nuevo" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-brand-600/30">
+                + Nuevo Producto
+            </a>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-800">Productos</h1>
+                    <p class="text-slate-500 mt-1">Gestiona tu inventario de productos</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar productos..." class="pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none w-64">
+                        <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">ID</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Nombre</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Descripción</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Precio</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Stock</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr th:each="producto : ${productos}" class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 text-sm font-mono text-slate-500" th:text="${producto.id}">1</td>
+                            <td class="px-6 py-4">
+                                <span class="font-semibold text-slate-800" th:text="${producto.nombre}">Producto</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-600" th:text="${producto.descripcion}">Descripción</td>
+                            <td class="px-6 py-4">
+                                <span class="font-mono text-brand-600 font-semibold" th:text="'$' + ${producto.precio}">$0.00</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                                      th:classappend="${producto.stock > 10} ? 'bg-green-100 text-green-700' : (${producto.stock > 0} ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700')"
+                                      th:text="${producto.stock}">0</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <button title="Editar" class="p-2 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </button>
+                                    <button title="Eliminar" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${productos.empty}">
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                                <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                </svg>
+                                <p class="text-lg">No hay productos registrados</p>
+                                <a href="/productos/nuevo" class="text-brand-600 hover:underline mt-2 inline-block">Crear el primer producto</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-slate-500 text-sm">Mostrando <span th:text="${productos.size()}">0</span> productos</p>
+                <div class="flex items-center gap-2">
+                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors text-sm">Anterior</button>
+                    <button class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm">1</button>
+                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors text-sm">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -23,7 +23,7 @@ public class ProductoController {
         model.addAttribute("producto", new Producto());
         model.addAttribute("titulo", "Nuevo Producto");
 
-        return "productos/nuevo";
+        return "producto/nuevo";
     }
 
     @PostMapping("/guardar")
@@ -35,7 +35,7 @@ public class ProductoController {
     @GetMapping
     public String listarProductos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
-        return "productos/index";
+        return "producto/index";
     }
 
 }
